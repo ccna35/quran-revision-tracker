@@ -1,11 +1,11 @@
 {
   "expo": {
-    "name": "Quran Revision Tracker",
-    "slug": "quran-revision-tracker",
+    "name": "Quran Tracker",
+    "slug": "quran-tracker",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
-    "scheme": "quranrevisiontracker",
+    "scheme": "qurantracker",
     "userInterfaceStyle": "automatic",
     "splash": {
       "image": "./assets/images/splash-icon.png",
@@ -22,7 +22,8 @@
         "backgroundImage": "./assets/images/android-icon-background.png",
         "monochromeImage": "./assets/images/android-icon-monochrome.png"
       },
-      "predictiveBackGestureEnabled": false
+      "predictiveBackGestureEnabled": false,
+      "package": "com.ccna35.qurantracker"
     },
     "web": {
       "bundler": "metro",
@@ -48,6 +49,20 @@
     ],
     "experiments": {
       "typedRoutes": true
+    },
+    "extra": {
+      "router": {},
+      "eas": {
+        "projectId": "a152d34f-1a4f-4262-9857-f32162d20a1d"
+      }
+    },
+    "owner": "ccna35"
+  },
+  "preview": {
+    "distribution": "internal",
+    "android": {
+      "buildType": "apk",
+      "gradleCommand": ":app:assembleRelease -PabiFilter=arm64-v8a"
     }
   }
 }
