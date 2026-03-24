@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Quran Revision - Add Surah</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "surface-container-low": "#f0f4f7",
+              "error": "#a83836",
+              "surface-variant": "#dce4e8",
+              "on-primary": "#e6ffee",
+              "on-tertiary-fixed-variant": "#3b0003",
+              "on-error": "#fff7f6",
+              "surface-container-highest": "#dce4e8",
+              "surface-container": "#eaeff2",
+              "primary-fixed-dim": "#58e7ab",
+              "primary-container": "#69f6b8",
+              "inverse-surface": "#0b0f10",
+              "on-error-container": "#6e0a12",
+              "surface-container-lowest": "#ffffff",
+              "secondary-dim": "#764900",
+              "inverse-primary": "#69f6b8",
+              "inverse-on-surface": "#9a9d9f",
+              "error-dim": "#67040d",
+              "surface-dim": "#d4dbdf",
+              "secondary": "#865400",
+              "on-secondary-container": "#744800",
+              "on-secondary-fixed": "#5b3700",
+              "surface-container-high": "#e3e9ed",
+              "surface": "#f7f9fb",
+              "surface-tint": "#006d4a",
+              "background": "#f7f9fb",
+              "on-tertiary-container": "#1f0001",
+              "primary-fixed": "#69f6b8",
+              "tertiary-container": "#fd4e4d",
+              "primary-dim": "#005f40",
+              "on-tertiary": "#fff7f6",
+              "tertiary-fixed": "#fd4e4d",
+              "on-primary-container": "#005a3c",
+              "tertiary-dim": "#a9081a",
+              "on-tertiary-fixed": "#000000",
+              "outline-variant": "#acb3b7",
+              "surface-bright": "#f7f9fb",
+              "secondary-fixed-dim": "#ffcb8e",
+              "on-secondary": "#fff7f3",
+              "outline": "#747c80",
+              "on-surface": "#2c3437",
+              "secondary-container": "#ffddb8",
+              "primary": "#006d4a",
+              "on-secondary-fixed-variant": "#815100",
+              "on-primary-fixed-variant": "#006544",
+              "tertiary-fixed-dim": "#ec4142",
+              "on-surface-variant": "#596064",
+              "error-container": "#fa746f",
+              "on-primary-fixed": "#00452d",
+              "secondary-fixed": "#ffddb8",
+              "tertiary": "#ba1b24",
+              "on-background": "#2c3437"
+            },
+            fontFamily: {
+              "headline": ["Inter"],
+              "body": ["Inter"],
+              "label": ["Inter"]
+            },
+            borderRadius: {"DEFAULT": "1rem", "lg": "2rem", "xl": "3rem", "full": "9999px"},
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .sc-active-nav { font-variation-settings: 'FILL' 1; }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-surface font-body text-on-surface antialiased">
+<!-- Background Dashboard (Dimmed) -->
+<div class="fixed inset-0 overflow-hidden pointer-events-none opacity-40 grayscale-[20%]">
+<!-- TopAppBar -->
+<header class="sticky top-0 w-full z-50 bg-surface/80 backdrop-blur-xl">
+<div class="flex justify-between items-center h-16 px-6 w-full max-w-7xl mx-auto">
+<div class="text-xl font-bold text-primary tracking-tighter flex items-center gap-2">
+<span class="material-symbols-outlined" data-icon="menu_book">menu_book</span>
+<span class="font-inter tracking-tight font-semibold text-headline-md">Quran Revision</span>
+</div>
+<div class="flex gap-4">
+<div class="p-2 rounded-full hover:bg-surface-container-highest transition-colors duration-400">
+<span class="material-symbols-outlined text-on-surface-variant" data-icon="settings">settings</span>
+</div>
+</div>
+</div>
+</header>
+<main class="max-w-7xl mx-auto px-6 py-8">
+<!-- Hero Stats Bento -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
+<div class="md:col-span-2 bg-surface-container-lowest p-8 rounded-DEFAULT flex flex-col justify-between min-h-[240px]">
+<div>
+<span class="text-label-md font-bold uppercase tracking-widest text-primary">Current Progress</span>
+<h1 class="text-[3.5rem] font-bold tracking-tight text-on-surface mt-2">72%</h1>
+</div>
+<div class="w-full h-2 bg-surface-container-highest rounded-full overflow-hidden">
+<div class="h-full bg-primary w-[72%]"></div>
+</div>
+</div>
+<div class="bg-primary-container/20 p-8 rounded-DEFAULT flex flex-col items-center justify-center text-center">
+<span class="material-symbols-outlined text-primary text-5xl mb-4" data-icon="auto_awesome">auto_awesome</span>
+<h3 class="text-title-sm font-semibold text-on-primary-container">Next Revision</h3>
+<p class="text-headline-md font-bold text-primary mt-1">Surah Al-Kahf</p>
+</div>
+</div>
+<!-- Dashboard Content -->
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
+<section>
+<h2 class="text-headline-md font-semibold mb-6">Daily Revision</h2>
+<div class="space-y-6">
+<div class="bg-surface-container-lowest p-6 rounded-DEFAULT flex items-center justify-between">
+<div class="flex items-center gap-6">
+<span class="text-display-lg text-surface-container opacity-50 font-bold">18</span>
+<div>
+<h3 class="text-title-sm font-semibold">Al-Kahf</h3>
+<p class="text-body-md text-on-surface-variant">Last revised 3 days ago</p>
+</div>
+</div>
+<span class="material-symbols-outlined text-primary" data-icon="check_circle">check_circle</span>
+</div>
+<div class="bg-surface-container-lowest p-6 rounded-DEFAULT flex items-center justify-between border-l-4 border-tertiary">
+<div class="flex items-center gap-6">
+<span class="text-display-lg text-surface-container opacity-50 font-bold">36</span>
+<div>
+<h3 class="text-title-sm font-semibold">Ya-Sin</h3>
+<p class="text-body-md text-tertiary">Urgent revision needed</p>
+</div>
+</div>
+<span class="material-symbols-outlined text-tertiary" data-icon="error">error</span>
+</div>
+</div>
+</section>
+</div>
+</main>
+</div>
+<!-- Modal Overlay -->
+<div class="fixed inset-0 z-[100] flex items-center justify-center p-4">
+<!-- Backdrop -->
+<div class="absolute inset-0 bg-on-surface/20 backdrop-blur-sm"></div>
+<!-- Modal Content -->
+<div class="relative w-full max-w-md bg-surface-container-lowest rounded-DEFAULT shadow-[0_20px_40px_rgba(44,52,55,0.06)] overflow-hidden scale-100 transition-transform duration-400 ease-[cubic-bezier(0.4,0,0.2,1)]">
+<div class="p-8">
+<div class="flex items-center gap-3 mb-6">
+<div class="w-10 h-10 rounded-full bg-primary-container/30 flex items-center justify-center">
+<span class="material-symbols-outlined text-primary" data-icon="library_add">library_add</span>
+</div>
+<h2 class="text-headline-md font-semibold tracking-tight text-on-surface">Add New Surah</h2>
+</div>
+<div class="space-y-6">
+<div class="space-y-2">
+<label class="text-label-md font-bold uppercase tracking-widest text-on-surface-variant block ml-1">Surah name</label>
+<div class="relative group">
+<input class="w-full bg-surface-container-highest border-none rounded-full py-4 px-6 text-on-surface placeholder:text-outline focus:ring-2 focus:ring-primary/20 focus:bg-surface-container-lowest transition-all duration-400" placeholder="Type Surah name..." type="text"/>
+</div>
+</div>
+<div class="flex gap-4 pt-4">
+<button class="flex-1 py-4 px-6 rounded-full font-semibold text-on-surface-variant hover:bg-surface-container-high transition-colors duration-400 active:scale-95">
+                            Cancel
+                        </button>
+<button class="flex-1 py-4 px-6 rounded-full font-semibold text-on-primary bg-gradient-to-br from-primary to-primary-dim shadow-[0_4px_12px_rgba(0,109,74,0.2)] hover:opacity-90 transition-all duration-400 active:scale-95">
+                            Add
+                        </button>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- BottomNavBar (Suppressed contextually but showing structure) -->
+<nav class="fixed bottom-0 left-0 w-full z-50 bg-surface-container-lowest/80 backdrop-blur-xl shadow-[0_-20px_40px_rgba(44,52,55,0.06)] opacity-40">
+<div class="fixed bottom-0 left-0 w-full flex justify-around items-center px-4 py-3 pb-safe">
+<div class="flex flex-col items-center justify-center text-primary bg-primary-container/20 rounded-full px-4 py-1">
+<span class="material-symbols-outlined sc-active-nav" data-icon="dashboard">dashboard</span>
+<span class="font-inter text-[10px] font-bold uppercase tracking-widest mt-1">Dashboard</span>
+</div>
+<div class="flex flex-col items-center justify-center text-on-surface-variant opacity-60">
+<span class="material-symbols-outlined" data-icon="leaderboard">leaderboard</span>
+<span class="font-inter text-[10px] font-bold uppercase tracking-widest mt-1">Stats</span>
+</div>
+<div class="flex flex-col items-center justify-center text-on-surface-variant opacity-60">
+<span class="material-symbols-outlined" data-icon="person">person</span>
+<span class="font-inter text-[10px] font-bold uppercase tracking-widest mt-1">Profile</span>
+</div>
+</div>
+</nav>
+</body></html>

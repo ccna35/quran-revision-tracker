@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Quran Revision Sanctuary</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "surface-container-low": "#f0f4f7",
+              "error": "#a83836",
+              "surface-variant": "#dce4e8",
+              "on-primary": "#e6ffee",
+              "on-tertiary-fixed-variant": "#3b0003",
+              "on-error": "#fff7f6",
+              "surface-container-highest": "#dce4e8",
+              "surface-container": "#eaeff2",
+              "primary-fixed-dim": "#58e7ab",
+              "primary-container": "#69f6b8",
+              "inverse-surface": "#0b0f10",
+              "on-error-container": "#6e0a12",
+              "surface-container-lowest": "#ffffff",
+              "secondary-dim": "#764900",
+              "inverse-primary": "#69f6b8",
+              "inverse-on-surface": "#9a9d9f",
+              "error-dim": "#67040d",
+              "surface-dim": "#d4dbdf",
+              "secondary": "#865400",
+              "on-secondary-container": "#744800",
+              "on-secondary-fixed": "#5b3700",
+              "surface-container-high": "#e3e9ed",
+              "surface": "#f7f9fb",
+              "surface-tint": "#006d4a",
+              "background": "#f7f9fb",
+              "on-tertiary-container": "#1f0001",
+              "primary-fixed": "#69f6b8",
+              "tertiary-container": "#fd4e4d",
+              "primary-dim": "#005f40",
+              "on-tertiary": "#fff7f6",
+              "tertiary-fixed": "#fd4e4d",
+              "on-primary-container": "#005a3c",
+              "tertiary-dim": "#a9081a",
+              "on-tertiary-fixed": "#000000",
+              "outline-variant": "#acb3b7",
+              "surface-bright": "#f7f9fb",
+              "secondary-fixed-dim": "#ffcb8e",
+              "on-secondary": "#fff7f3",
+              "outline": "#747c80",
+              "on-surface": "#2c3437",
+              "secondary-container": "#ffddb8",
+              "primary": "#006d4a",
+              "on-secondary-fixed-variant": "#815100",
+              "on-primary-fixed-variant": "#006544",
+              "tertiary-fixed-dim": "#ec4142",
+              "on-surface-variant": "#596064",
+              "error-container": "#fa746f",
+              "on-primary-fixed": "#00452d",
+              "secondary-fixed": "#ffddb8",
+              "tertiary": "#ba1b24",
+              "on-background": "#2c3437"
+            },
+            fontFamily: {
+              "headline": ["Inter"],
+              "body": ["Inter"],
+              "label": ["Inter"]
+            },
+            borderRadius: {"DEFAULT": "1rem", "lg": "2rem", "xl": "3rem", "full": "9999px"},
+          },
+        },
+      }
+    </script>
+<style>
+        body { font-family: 'Inter', sans-serif; }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .editorial-shadow {
+            box-shadow: 0 20px 40px rgba(44, 52, 55, 0.06);
+        }
+        .bg-primary-gradient {
+            background: linear-gradient(135deg, #006d4a 0%, #005f40 100%);
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-surface text-on-surface min-h-screen selection:bg-primary-container selection:text-on-primary-container">
+<!-- TopAppBar -->
+<header class="sticky top-0 w-full z-50 bg-surface/80 backdrop-blur-xl">
+<div class="flex justify-between items-center h-16 px-6 w-full max-w-7xl mx-auto">
+<div class="text-xl font-bold text-primary tracking-tighter flex items-center gap-2">
+<span class="material-symbols-outlined" data-icon="menu_book">menu_book</span>
+<span class="font-inter tracking-tight font-semibold text-headline-md">Quran Revision</span>
+</div>
+<div class="flex items-center gap-4">
+<button class="p-2 rounded-full hover:bg-surface-container-highest transition-colors duration-400 active:scale-95">
+<span class="material-symbols-outlined text-on-surface-variant" data-icon="settings">settings</span>
+</button>
+</div>
+</div>
+</header>
+<main class="max-w-7xl mx-auto px-6 py-12 pb-32">
+<!-- Hero Editorial Section -->
+<section class="mb-16">
+<h1 class="text-[3.5rem] font-bold tracking-[-0.04em] leading-tight text-on-surface">
+                The Sanctuary
+            </h1>
+<p class="text-on-surface-variant text-lg max-w-xl mt-2">
+                Maintain the light of the Quran in your heart through steady, intentional revision.
+            </p>
+</section>
+<!-- Search & Controls -->
+<section class="flex flex-col md:flex-row gap-4 mb-12 items-center">
+<div class="relative w-full md:max-w-md group">
+<span class="absolute left-4 top-1/2 -translate-y-1/2 material-symbols-outlined text-on-surface-variant text-xl" data-icon="search">search</span>
+<input class="w-full pl-12 pr-6 py-4 bg-surface-container-highest border-none rounded-full focus:ring-2 focus:ring-primary/20 focus:bg-surface-container-lowest transition-all duration-400 placeholder:text-on-surface-variant/60" placeholder="Search Surah..." type="text"/>
+</div>
+<div class="flex gap-3 w-full md:w-auto">
+<button class="flex items-center gap-2 px-6 py-4 bg-surface-container-low rounded-full hover:bg-surface-container-highest transition-all duration-400 group border border-outline-variant/10">
+<span class="text-label-md font-bold uppercase tracking-widest text-on-surface-variant">Sort by</span>
+<span class="material-symbols-outlined text-on-surface-variant" data-icon="expand_more">expand_more</span>
+</button>
+<button class="flex-1 md:flex-none flex items-center justify-center gap-2 px-8 py-4 bg-primary-gradient text-on-primary rounded-full editorial-shadow hover:opacity-90 transition-all duration-400 active:scale-95">
+<span class="material-symbols-outlined" data-icon="add">add</span>
+<span class="font-medium">Add Surah</span>
+</button>
+</div>
+</section>
+<!-- Surah Grid -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+<!-- Card 1: Al-Baqarah (Recent) -->
+<div class="group relative bg-surface-container-lowest p-8 rounded-DEFAULT editorial-shadow transition-all duration-400 hover:-translate-y-1">
+<div class="flex justify-between items-start mb-6">
+<div>
+<span class="text-display-lg text-surface-container-highest font-bold leading-none select-none">02</span>
+<h3 class="text-headline-md font-semibold mt-2">Al-Baqarah</h3>
+</div>
+<span class="px-4 py-1.5 rounded-full text-label-md font-bold uppercase tracking-widest bg-primary-container text-on-primary-container">
+                        0 days ago
+                    </span>
+</div>
+<div class="space-y-6">
+<div class="flex items-center gap-2 text-on-surface-variant body-md">
+<span class="material-symbols-outlined text-sm" data-icon="event">event</span>
+<span>Last revised: Today</span>
+</div>
+<button class="w-full py-4 rounded-full border border-outline-variant/20 text-primary font-bold hover:bg-primary-container/10 transition-colors duration-400 flex items-center justify-center gap-2">
+<span class="material-symbols-outlined" data-icon="check_circle">check_circle</span>
+                        Mark as Revised
+                    </button>
+</div>
+</div>
+<!-- Card 2: Al-Imran (Warning) -->
+<div class="group relative bg-surface-container-lowest p-8 rounded-DEFAULT editorial-shadow transition-all duration-400 hover:-translate-y-1">
+<div class="flex justify-between items-start mb-6">
+<div>
+<span class="text-display-lg text-surface-container-highest font-bold leading-none select-none">03</span>
+<h3 class="text-headline-md font-semibold mt-2">Al-Imran</h3>
+</div>
+<span class="px-4 py-1.5 rounded-full text-label-md font-bold uppercase tracking-widest bg-secondary-container text-on-secondary-container">
+                        3 days ago
+                    </span>
+</div>
+<div class="space-y-6">
+<div class="flex items-center gap-2 text-on-surface-variant body-md">
+<span class="material-symbols-outlined text-sm" data-icon="event">event</span>
+<span>Last revised: Monday</span>
+</div>
+<button class="w-full py-4 rounded-full border border-outline-variant/20 text-primary font-bold hover:bg-primary-container/10 transition-colors duration-400 flex items-center justify-center gap-2">
+<span class="material-symbols-outlined" data-icon="check_circle">check_circle</span>
+                        Mark as Revised
+                    </button>
+</div>
+</div>
+<!-- Card 3: An-Nisa (Urgent) -->
+<div class="group relative bg-surface-container-lowest p-8 rounded-DEFAULT editorial-shadow transition-all duration-400 hover:-translate-y-1">
+<div class="flex justify-between items-start mb-6">
+<div>
+<span class="text-display-lg text-surface-container-highest font-bold leading-none select-none">04</span>
+<h3 class="text-headline-md font-semibold mt-2">An-Nisa</h3>
+</div>
+<span class="px-4 py-1.5 rounded-full text-label-md font-bold uppercase tracking-widest bg-tertiary-container text-on-tertiary-container">
+                        9 days ago
+                    </span>
+</div>
+<div class="space-y-6">
+<div class="flex items-center gap-2 text-on-surface-variant body-md">
+<span class="material-symbols-outlined text-sm" data-icon="event">event</span>
+<span>Last revised: Last week</span>
+</div>
+<button class="w-full py-4 rounded-full border border-outline-variant/20 text-primary font-bold hover:bg-primary-container/10 transition-colors duration-400 flex items-center justify-center gap-2">
+<span class="material-symbols-outlined" data-icon="check_circle">check_circle</span>
+                        Mark as Revised
+                    </button>
+</div>
+</div>
+<!-- Card 4: Al-Ma'idah (Neutral) -->
+<div class="group relative bg-surface-container-lowest p-8 rounded-DEFAULT editorial-shadow transition-all duration-400 hover:-translate-y-1">
+<div class="flex justify-between items-start mb-6">
+<div>
+<span class="text-display-lg text-surface-container-highest font-bold leading-none select-none">05</span>
+<h3 class="text-headline-md font-semibold mt-2">Al-Ma'idah</h3>
+</div>
+<span class="px-4 py-1.5 rounded-full text-label-md font-bold uppercase tracking-widest bg-surface-container text-on-surface-variant">
+                        6 days ago
+                    </span>
+</div>
+<div class="space-y-6">
+<div class="flex items-center gap-2 text-on-surface-variant body-md">
+<span class="material-symbols-outlined text-sm" data-icon="event">event</span>
+<span>Last revised: Saturday</span>
+</div>
+<button class="w-full py-4 rounded-full border border-outline-variant/20 text-primary font-bold hover:bg-primary-container/10 transition-colors duration-400 flex items-center justify-center gap-2">
+<span class="material-symbols-outlined" data-icon="check_circle">check_circle</span>
+                        Mark as Revised
+                    </button>
+</div>
+</div>
+<!-- Card 5: Al-An'am (Never) -->
+<div class="group relative bg-surface-container-lowest p-8 rounded-DEFAULT editorial-shadow transition-all duration-400 hover:-translate-y-1">
+<div class="flex justify-between items-start mb-6">
+<div>
+<span class="text-display-lg text-surface-container-highest font-bold leading-none select-none">06</span>
+<h3 class="text-headline-md font-semibold mt-2">Al-An'am</h3>
+</div>
+<span class="px-4 py-1.5 rounded-full text-label-md font-bold uppercase tracking-widest bg-surface-variant text-on-surface-variant">
+                        Never revised
+                    </span>
+</div>
+<div class="space-y-6">
+<div class="flex items-center gap-2 text-on-surface-variant body-md">
+<span class="material-symbols-outlined text-sm" data-icon="event">event</span>
+<span>No history found</span>
+</div>
+<button class="w-full py-4 rounded-full border border-outline-variant/20 text-primary font-bold hover:bg-primary-container/10 transition-colors duration-400 flex items-center justify-center gap-2">
+<span class="material-symbols-outlined" data-icon="check_circle">check_circle</span>
+                        Mark as Revised
+                    </button>
+</div>
+</div>
+<!-- Add New Card CTA -->
+<div class="group relative border-2 border-dashed border-outline-variant/20 p-8 rounded-DEFAULT transition-all duration-400 hover:bg-surface-container-low flex flex-col items-center justify-center text-center cursor-pointer min-h-[300px]">
+<div class="w-16 h-16 rounded-full bg-surface-container-highest flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-400">
+<span class="material-symbols-outlined text-3xl text-on-surface-variant" data-icon="library_add">library_add</span>
+</div>
+<h3 class="text-title-sm font-semibold text-on-surface">Add another Surah</h3>
+<p class="body-md text-on-surface-variant mt-1">Start tracking your hifz progress</p>
+</div>
+</div>
+</main>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 left-0 w-full z-50 bg-surface-container-lowest/80 backdrop-blur-xl md:hidden shadow-[0_-20px_40px_rgba(44,52,55,0.06)]">
+<div class="flex justify-around items-center px-4 py-3 pb-safe">
+<a class="flex flex-col items-center justify-center text-primary bg-primary-container/20 rounded-full px-4 py-1 scale-110 duration-400 ease-[cubic-bezier(0.4,0,0.2,1)]" href="#">
+<span class="material-symbols-outlined" data-icon="dashboard" style="font-variation-settings: 'FILL' 1;">dashboard</span>
+<span class="font-inter text-[10px] font-bold uppercase tracking-widest mt-1">Dashboard</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant opacity-60 hover:opacity-100 transition-opacity" href="#">
+<span class="material-symbols-outlined" data-icon="leaderboard">leaderboard</span>
+<span class="font-inter text-[10px] font-bold uppercase tracking-widest mt-1">Stats</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant opacity-60 hover:opacity-100 transition-opacity" href="#">
+<span class="material-symbols-outlined" data-icon="person">person</span>
+<span class="font-inter text-[10px] font-bold uppercase tracking-widest mt-1">Profile</span>
+</a>
+</div>
+</nav>
+<!-- Desktop Floating Action Button (FAB) - Contextual to Home -->
+<button class="hidden md:flex fixed bottom-8 right-8 w-14 h-14 rounded-full bg-primary-gradient text-on-primary editorial-shadow items-center justify-center hover:scale-110 active:scale-95 transition-all duration-400 z-40">
+<span class="material-symbols-outlined text-2xl" data-icon="edit_square">edit_square</span>
+</button>
+</body></html>
