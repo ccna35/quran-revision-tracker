@@ -1,5 +1,5 @@
 import { Ionicons } from "@expo/vector-icons";
-import { StyleSheet, TextInput, View } from "react-native";
+import { Pressable, StyleSheet, TextInput, View } from "react-native";
 
 import { useAppTheme } from "@/theme/provider";
 
@@ -31,11 +31,18 @@ export function SearchInput({ onChangeText, value }: SearchInputProps) {
         value={value}
       />
       {value ? (
-        <Ionicons
-          color={theme.colors.textMuted}
-          name="sparkles-outline"
-          size={18}
-        />
+        <Pressable
+          accessibilityLabel="Clear search"
+          accessibilityRole="button"
+          onPress={() => onChangeText("")}
+          style={({ pressed }) => [{ opacity: pressed ? 0.7 : 1 }]}
+        >
+          <Ionicons
+            color={theme.colors.textMuted}
+            name="close-circle"
+            size={20}
+          />
+        </Pressable>
       ) : null}
     </View>
   );

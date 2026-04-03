@@ -1,6 +1,7 @@
 import { differenceInCalendarDays, isValid, parseISO } from 'date-fns';
 
 import type { TrackedSurah } from '@/types/surah';
+import { getLatestSurahRevisionAt, getSurahRubStates } from '@/utils/surah-rub';
 
 function toValidDate(iso: string) {
     const parsed = parseISO(iso);
@@ -9,17 +10,19 @@ function toValidDate(iso: string) {
 }
 
 export function getRevisionEvents(surah: TrackedSurah) {
-    const fromHistory = (surah.revisionEvents ?? [])
+    const fromRubHistory = getSurahRubStates(surah)
+        .flatMap((rub) => rub.revisionEvents)
+        .filter((iso, index, entries) => entries.indexOf(iso) === index)
         .map((iso) => ({ iso, parsed: toValidDate(iso) }))
         .filter((entry): entry is { iso: string; parsed: Date } => entry.parsed !== null)
         .sort((a, b) => a.parsed.getTime() - b.parsed.getTime())
         .map((entry) => entry.iso);
 
-    if (fromHistory.length > 0) {
-        return fromHistory;
+    if (fromRubHistory.length > 0) {
+        return fromRubHistory;
     }
 
-    return surah.lastRevisedAt ? [surah.lastRevisedAt] : [];
+    return getLatestSurahRevisionAt(surah) ? [getLatestSurahRevisionAt(surah) as string] : [];
 }
 
 export function getRevisionCount(surah: TrackedSurah) {

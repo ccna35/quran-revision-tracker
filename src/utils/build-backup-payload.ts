@@ -10,7 +10,9 @@ export function buildBackupPayload(trackedSurahs: TrackedSurah[]): BackupPayload
         metadata: {
             totalTrackedSurahs: summary.totalTrackedSurahs,
             revisedSurahs: summary.revisedSurahs,
+            revisedRubCount: summary.revisedRubCount,
             appVersion: '1.0.0',
+            totalRubCount: summary.totalRubCount,
         },
     };
 }

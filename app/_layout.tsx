@@ -48,6 +48,13 @@ function RootLayoutNav() {
             contentStyle: { backgroundColor: theme.colors.background },
           }}
         />
+        <Stack.Screen
+          name="surah/[surahId]"
+          options={{
+            headerShown: false,
+            contentStyle: { backgroundColor: theme.colors.background },
+          }}
+        />
         <Stack.Screen name="+not-found" options={{ title: "Not found" }} />
       </Stack>
     </>

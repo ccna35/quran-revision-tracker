@@ -1,35 +1,43 @@
 import { Ionicons } from "@expo/vector-icons";
-import { LinearGradient } from "expo-linear-gradient";
 import { router } from "expo-router";
 import { useDeferredValue, useState } from "react";
 import { Pressable, StyleSheet, Text, View } from "react-native";
 
-import { ConfirmDialog } from "@/components/common/ConfirmDialog";
 import { EmptyState } from "@/components/common/EmptyState";
 import { Screen } from "@/components/common/Screen";
 import { SearchInput } from "@/components/common/SearchInput";
 import { SortSelector } from "@/components/common/SortSelector";
 import { ProgressSummary } from "@/components/dashboard/ProgressSummary";
 import { SurahCard } from "@/components/surah/SurahCard";
-import { SurahStatsModal } from "@/components/surah/SurahStatsModal";
 import { useSurahStore } from "@/store/use-surah-store";
 import { useAppTheme } from "@/theme/provider";
-import type { SortOption, TrackedSurah } from "@/types/surah";
+import type { SortOption } from "@/types/surah";
 import { filterSurahs } from "@/utils/surah-filter";
 import { sortSurahs } from "@/utils/surah-sort";
-import { getProgressSummary } from "@/utils/surah-status";
+import {
+  getProgressSummary,
+  getSurahComputedState,
+} from "@/utils/surah-status";
+
+type DashboardTab = "revised" | "never";
 
 export default function DashboardScreen() {
   const theme = useAppTheme();
   const trackedSurahs = useSurahStore((state) => state.trackedSurahs);
-  const markAsRevised = useSurahStore((state) => state.markAsRevised);
   const [query, setQuery] = useState("");
   const [sortOption, setSortOption] = useState<SortOption>("days-desc");
-  const [selectedSurah, setSelectedSurah] = useState<TrackedSurah | null>(null);
-  const [statsSurah, setStatsSurah] = useState<TrackedSurah | null>(null);
+  const [activeTab, setActiveTab] = useState<DashboardTab>("revised");
   const deferredQuery = useDeferredValue(query);
+  const revisedSurahs = trackedSurahs.filter(
+    (surah) => !getSurahComputedState(surah).neverRevised,
+  );
+  const neverRevisedSurahs = trackedSurahs.filter(
+    (surah) => getSurahComputedState(surah).neverRevised,
+  );
+  const activeSource =
+    activeTab === "revised" ? revisedSurahs : neverRevisedSurahs;
   const visibleSurahs = sortSurahs(
-    filterSurahs(trackedSurahs, deferredQuery),
+    filterSurahs(activeSource, deferredQuery),
     sortOption,
   );
   const summary = getProgressSummary(trackedSurahs);
@@ -69,45 +77,96 @@ export default function DashboardScreen() {
       <View style={styles.controls}>
         <SearchInput onChangeText={setQuery} value={query} />
         <View style={styles.controlsRow}>
-          <View style={styles.sortWrap}>
+          <View style={styles.sortWrapFull}>
             <SortSelector onChange={setSortOption} value={sortOption} />
           </View>
-          <Pressable
-            onPress={() => router.push("/add-surah")}
-            style={({ pressed }) => [{ opacity: pressed ? 0.85 : 1 }]}
-          >
-            <LinearGradient
-              colors={[theme.colors.primary, theme.colors.primaryDim]}
-              end={{ x: 1, y: 1 }}
-              start={{ x: 0, y: 0 }}
-              style={styles.addPill}
-            >
-              <Ionicons
-                color={theme.colors.textOnPrimary}
-                name="add"
-                size={18}
-              />
-              <Text
-                style={[
-                  styles.addPillLabel,
-                  { color: theme.colors.textOnPrimary },
-                ]}
-              >
-                Add Surah
-              </Text>
-            </LinearGradient>
-          </Pressable>
         </View>
       </View>
 
       <View style={styles.listHeader}>
         <Text style={[styles.sectionTitle, { color: theme.colors.text }]}>
-          Tracked Surahs
+          {activeTab === "revised" ? "Revised Surahs" : "Never Revised"}
         </Text>
-        <Text style={[styles.sectionMeta, { color: theme.colors.textMuted }]}>
-          {visibleSurahs.length} shown
-        </Text>
+        <View style={styles.listHeaderActions}>
+          <Text style={[styles.sectionMeta, { color: theme.colors.textMuted }]}>
+            {visibleSurahs.length} shown
+          </Text>
+          <Pressable
+            onPress={() => router.push("/add-surah")}
+            style={({ pressed }) => [
+              styles.addIconButton,
+              {
+                backgroundColor: theme.colors.primary,
+                opacity: pressed ? 0.85 : 1,
+              },
+            ]}
+          >
+            <Ionicons color={theme.colors.textOnPrimary} name="add" size={18} />
+          </Pressable>
+        </View>
       </View>
+
+      {trackedSurahs.length > 0 ? (
+        <View
+          style={[
+            styles.segmentedTabs,
+            { backgroundColor: theme.colors.cardElevated },
+          ]}
+        >
+          {[
+            { key: "revised", label: "Revised", count: revisedSurahs.length },
+            {
+              key: "never",
+              label: "Never Revised",
+              count: neverRevisedSurahs.length,
+            },
+          ].map((tab) => {
+            const isActive = activeTab === tab.key;
+
+            return (
+              <Pressable
+                key={tab.key}
+                onPress={() => setActiveTab(tab.key as DashboardTab)}
+                style={[
+                  styles.segmentTab,
+                  {
+                    backgroundColor: isActive
+                      ? theme.colors.card
+                      : "transparent",
+                  },
+                ]}
+              >
+                <View style={styles.segmentTabContent}>
+                  <Text
+                    style={[
+                      styles.segmentLabel,
+                      {
+                        color: isActive
+                          ? theme.colors.text
+                          : theme.colors.textMuted,
+                      },
+                    ]}
+                  >
+                    {tab.label}
+                  </Text>
+                  <Text
+                    style={[
+                      styles.segmentCount,
+                      {
+                        color: isActive
+                          ? theme.colors.primary
+                          : theme.colors.textMuted,
+                      },
+                    ]}
+                  >
+                    {tab.count}
+                  </Text>
+                </View>
+              </Pressable>
+            );
+          })}
+        </View>
+      ) : null}
 
       {trackedSurahs.length === 0 ? (
         <EmptyState onPrimaryAction={() => router.push("/add-surah")} />
@@ -116,12 +175,20 @@ export default function DashboardScreen() {
           style={[styles.noResultsCard, { backgroundColor: theme.colors.card }]}
         >
           <Text style={[styles.noResultsTitle, { color: theme.colors.text }]}>
-            No matching Surahs
+            {deferredQuery
+              ? "No matching Surahs"
+              : activeTab === "revised"
+                ? "No revised Surahs yet"
+                : "No never-revised Surahs"}
           </Text>
           <Text
             style={[styles.noResultsBody, { color: theme.colors.textMuted }]}
           >
-            Try a shorter or broader search term.
+            {deferredQuery
+              ? "Try a shorter or broader search term."
+              : activeTab === "revised"
+                ? "Open a Surah and mark a Rub' to move it into the revised tab."
+                : "Every tracked Surah already has at least one revised Rub'."}
           </Text>
         </View>
       ) : (
@@ -129,34 +196,17 @@ export default function DashboardScreen() {
           {visibleSurahs.map((surah) => (
             <SurahCard
               key={surah.id}
-              onMarkRevised={setSelectedSurah}
-              onOpenStats={setStatsSurah}
+              onPress={(selectedSurah) =>
+                router.push({
+                  pathname: "/surah/[surahId]",
+                  params: { surahId: selectedSurah.id },
+                })
+              }
               surah={surah}
             />
           ))}
         </View>
       )}
-
-      <SurahStatsModal
-        onClose={() => setStatsSurah(null)}
-        surah={statsSurah}
-        visible={statsSurah !== null}
-      />
-
-      <ConfirmDialog
-        confirmLabel="Confirm"
-        message="Are you sure you revised this Surah?"
-        onCancel={() => setSelectedSurah(null)}
-        onConfirm={() => {
-          if (selectedSurah) {
-            markAsRevised(selectedSurah.id);
-          }
-
-          setSelectedSurah(null);
-        }}
-        title="Confirm Revision"
-        visible={selectedSurah !== null}
-      />
     </Screen>
   );
 }
@@ -208,18 +258,8 @@ const styles = StyleSheet.create({
   sortWrap: {
     flex: 1,
   },
-  addPill: {
-    alignItems: "center",
-    borderRadius: 999,
-    flexDirection: "row",
-    gap: 8,
-    paddingHorizontal: 18,
-    paddingVertical: 14,
-  },
-  addPillLabel: {
-    fontSize: 13,
-    fontWeight: "700",
-    letterSpacing: 0.6,
+  sortWrapFull: {
+    flex: 1,
   },
   listHeader: {
     alignItems: "center",
@@ -227,6 +267,18 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     marginBottom: 16,
     marginTop: 28,
+  },
+  listHeaderActions: {
+    alignItems: "center",
+    flexDirection: "row",
+    gap: 10,
+  },
+  addIconButton: {
+    alignItems: "center",
+    borderRadius: 999,
+    height: 34,
+    justifyContent: "center",
+    width: 34,
   },
   sectionTitle: {
     fontSize: 24,
@@ -239,6 +291,36 @@ const styles = StyleSheet.create({
   },
   cardList: {
     gap: 16,
+  },
+  segmentedTabs: {
+    borderRadius: 14,
+    flexDirection: "row",
+    gap: 8,
+    marginBottom: 16,
+    padding: 4,
+  },
+  segmentTab: {
+    borderRadius: 10,
+    flex: 1,
+    minHeight: 38,
+    paddingHorizontal: 10,
+    paddingVertical: 8,
+  },
+  segmentTabContent: {
+    alignItems: "center",
+    flexDirection: "row",
+    justifyContent: "space-between",
+  },
+  segmentLabel: {
+    fontSize: 11,
+    fontWeight: "700",
+    letterSpacing: 0.6,
+    textTransform: "uppercase",
+  },
+  segmentCount: {
+    fontSize: 14,
+    fontWeight: "700",
+    letterSpacing: -0.2,
   },
   noResultsCard: {
     borderRadius: 24,

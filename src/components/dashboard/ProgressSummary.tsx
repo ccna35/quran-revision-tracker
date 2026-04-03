@@ -14,7 +14,7 @@ export function ProgressSummary({ summary }: ProgressSummaryProps) {
     <View style={styles.root}>
       <View style={[styles.heroCard, { backgroundColor: theme.colors.card }]}>
         <Text style={[styles.eyebrow, { color: theme.colors.primary }]}>
-          Current progress
+          Rub' completion
         </Text>
         <Text style={[styles.heroValue, { color: theme.colors.text }]}>
           {summary.progressPercentage}%
@@ -30,7 +30,7 @@ export function ProgressSummary({ summary }: ProgressSummaryProps) {
               styles.progressFill,
               {
                 backgroundColor: theme.colors.primary,
-                width: `${Math.max(summary.progressPercentage, summary.totalTrackedSurahs ? 8 : 0)}%`,
+                width: `${Math.max(summary.progressPercentage, summary.totalRubCount ? 8 : 0)}%`,
               },
             ]}
           />
@@ -60,7 +60,7 @@ export function ProgressSummary({ summary }: ProgressSummaryProps) {
             Revised
           </Text>
           <Text style={[styles.statValue, { color: theme.colors.text }]}>
-            {summary.revisedSurahs}
+            {summary.revisedRubCount}
           </Text>
         </View>
         <View
@@ -70,7 +70,7 @@ export function ProgressSummary({ summary }: ProgressSummaryProps) {
           ]}
         >
           <Text style={[styles.statLabel, { color: theme.colors.textMuted }]}>
-            Never
+            Never Revised
           </Text>
           <Text style={[styles.statValue, { color: theme.colors.text }]}>
             {summary.neverRevisedSurahs}

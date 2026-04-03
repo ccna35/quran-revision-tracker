@@ -5,6 +5,7 @@ import { createJSONStorage, persist } from 'zustand/middleware';
 import { sampleSurahSeeds } from '@/constants/sample-surahs';
 import type { TrackedSurah } from '@/types/surah';
 import { normalizeSurahName } from '@/utils/normalize-surah-name';
+import { getSurahRubStates, hydrateTrackedSurah } from '@/utils/surah-rub';
 
 interface AddSurahResult {
     error?: string;
@@ -15,8 +16,14 @@ interface SurahState {
     trackedSurahs: TrackedSurah[];
     addSurah: (name: string, surahNumber?: number) => AddSurahResult;
     markAsRevised: (id: string) => void;
+    markEntireSurahAsRevised: (id: string) => void;
+    markRubAsRevised: (surahId: string, rubId: string) => void;
     resetAll: () => void;
     loadSampleData: () => void;
+}
+
+function appendRevisionEvent(revisionEvents: string[], revisedAt: string) {
+    return [...revisionEvents, revisedAt];
 }
 
 function createTrackedSurah(name: string, surahNumber?: number): TrackedSurah {
@@ -56,7 +63,7 @@ export const useSurahStore = create<SurahState>()(
                 const surah = createTrackedSurah(trimmedName, surahNumber);
 
                 set((state) => ({
-                    trackedSurahs: [surah, ...state.trackedSurahs],
+                    trackedSurahs: [hydrateTrackedSurah(surah), ...state.trackedSurahs],
                 }));
 
                 return { surah };
@@ -66,15 +73,70 @@ export const useSurahStore = create<SurahState>()(
                     const revisedAt = new Date().toISOString();
 
                     return {
-                        trackedSurahs: state.trackedSurahs.map((surah) =>
-                            surah.id === id
-                                ? {
-                                    ...surah,
-                                    lastRevisedAt: revisedAt,
-                                    revisionEvents: [...(surah.revisionEvents ?? []), revisedAt],
-                                }
-                                : surah
-                        ),
+                        trackedSurahs: state.trackedSurahs.map((surah) => {
+                            if (surah.id !== id) {
+                                return surah;
+                            }
+
+                            const hydratedSurah = hydrateTrackedSurah(surah);
+                            const rubRevisions = getSurahRubStates(hydratedSurah).map((rub) => ({
+                                rubId: rub.id,
+                                revisionEvents: appendRevisionEvent(rub.revisionEvents, revisedAt),
+                            }));
+
+                            return hydrateTrackedSurah({
+                                ...hydratedSurah,
+                                rubRevisions,
+                            });
+                        }),
+                    };
+                }),
+            markEntireSurahAsRevised: (id) =>
+                set((state) => {
+                    const revisedAt = new Date().toISOString();
+
+                    return {
+                        trackedSurahs: state.trackedSurahs.map((surah) => {
+                            if (surah.id !== id) {
+                                return surah;
+                            }
+
+                            const hydratedSurah = hydrateTrackedSurah(surah);
+                            const rubRevisions = getSurahRubStates(hydratedSurah).map((rub) => ({
+                                rubId: rub.id,
+                                revisionEvents: appendRevisionEvent(rub.revisionEvents, revisedAt),
+                            }));
+
+                            return hydrateTrackedSurah({
+                                ...hydratedSurah,
+                                rubRevisions,
+                            });
+                        }),
+                    };
+                }),
+            markRubAsRevised: (surahId, rubId) =>
+                set((state) => {
+                    const revisedAt = new Date().toISOString();
+
+                    return {
+                        trackedSurahs: state.trackedSurahs.map((surah) => {
+                            if (surah.id !== surahId) {
+                                return surah;
+                            }
+
+                            const hydratedSurah = hydrateTrackedSurah(surah);
+                            const rubRevisions = getSurahRubStates(hydratedSurah).map((rub) => ({
+                                rubId: rub.id,
+                                revisionEvents: rub.id === rubId
+                                    ? appendRevisionEvent(rub.revisionEvents, revisedAt)
+                                    : rub.revisionEvents,
+                            }));
+
+                            return hydrateTrackedSurah({
+                                ...hydratedSurah,
+                                rubRevisions,
+                            });
+                        }),
                     };
                 }),
             resetAll: () => set({ trackedSurahs: [] }),
@@ -103,7 +165,8 @@ export const useSurahStore = create<SurahState>()(
                                 lastRevisedAt,
                                 revisionEvents,
                             };
-                        });
+                        })
+                        .map(hydrateTrackedSurah);
 
                     return {
                         trackedSurahs: [...seededSurahs, ...state.trackedSurahs],
@@ -112,6 +175,16 @@ export const useSurahStore = create<SurahState>()(
         }),
         {
             name: 'quran-revision-tracker-surahs',
+            merge: (persistedState, currentState) => {
+                const typedPersistedState = persistedState as Partial<SurahState> | undefined;
+
+                return {
+                    ...currentState,
+                    ...typedPersistedState,
+                    trackedSurahs: (typedPersistedState?.trackedSurahs ?? currentState.trackedSurahs)
+                        .map(hydrateTrackedSurah),
+                };
+            },
             storage: createJSONStorage(() => AsyncStorage),
         }
     )

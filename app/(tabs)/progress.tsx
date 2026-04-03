@@ -20,8 +20,8 @@ export default function ProgressScreen() {
     <Screen>
       <Text style={[styles.title, { color: theme.colors.text }]}>Progress</Text>
       <Text style={[styles.subtitle, { color: theme.colors.textMuted }]}>
-        Progress is based only on how many tracked Surahs have been revised at
-        least once.
+        Progress now measures Rub' completion across all tracked Surahs, so you
+        can build momentum even when a full Surah spans multiple sittings.
       </Text>
 
       <ProgressSummary summary={summary} />
@@ -55,7 +55,8 @@ export default function ProgressScreen() {
                   <Text
                     style={[styles.itemMeta, { color: theme.colors.textMuted }]}
                   >
-                    {computed.lastRevisedLabel}
+                    {computed.lastRevisedLabel} · {computed.progressPercentage}%
+                    complete
                   </Text>
                 </View>
                 <Text

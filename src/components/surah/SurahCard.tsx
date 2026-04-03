@@ -7,16 +7,11 @@ import type { TrackedSurah } from "@/types/surah";
 import { getSurahComputedState } from "@/utils/surah-status";
 
 interface SurahCardProps {
-  onMarkRevised: (surah: TrackedSurah) => void;
-  onOpenStats: (surah: TrackedSurah) => void;
+  onPress: (surah: TrackedSurah) => void;
   surah: TrackedSurah;
 }
 
-export function SurahCard({
-  onMarkRevised,
-  onOpenStats,
-  surah,
-}: SurahCardProps) {
+export function SurahCard({ onPress, surah }: SurahCardProps) {
   const theme = useAppTheme();
   const computed = getSurahComputedState(surah);
   const arabicName = getArabicSurahNameByNormalizedName(surah.normalizedName);
@@ -50,7 +45,7 @@ export function SurahCard({
 
   return (
     <Pressable
-      onPress={() => onOpenStats(surah)}
+      onPress={() => onPress(surah)}
       style={[
         styles.card,
         {
@@ -93,28 +88,38 @@ export function SurahCard({
           {computed.lastRevisedLabel}
         </Text>
       </View>
-      <Pressable
-        onPress={(event) => {
-          event.stopPropagation();
-          onMarkRevised(surah);
-        }}
-        style={({ pressed }) => [
-          styles.resolveButton,
-          {
-            borderColor: theme.colors.border,
-            backgroundColor: pressed ? theme.colors.primarySoft : "transparent",
-          },
-        ]}
-      >
-        <Ionicons
-          color={theme.colors.primary}
-          name="checkmark-circle"
-          size={18}
-        />
-        <Text style={[styles.resolveLabel, { color: theme.colors.primary }]}>
-          Mark as Revised
-        </Text>
-      </Pressable>
+
+      <View style={styles.progressBlock}>
+        <View style={styles.progressHeader}>
+          <Text
+            style={[styles.progressLabel, { color: theme.colors.textMuted }]}
+          >
+            Rub' progress
+          </Text>
+          <Text style={[styles.progressValue, { color: theme.colors.text }]}>
+            {computed.progressPercentage}%
+          </Text>
+        </View>
+        <View
+          style={[
+            styles.progressTrack,
+            { backgroundColor: theme.colors.cardMuted },
+          ]}
+        >
+          <View
+            style={[
+              styles.progressFill,
+              {
+                backgroundColor: theme.colors.primary,
+                width: `${Math.max(
+                  computed.progressPercentage,
+                  computed.totalRubCount > 0 ? 8 : 0,
+                )}%`,
+              },
+            ]}
+          />
+        </View>
+      </View>
     </Pressable>
   );
 }
@@ -165,18 +170,31 @@ const styles = StyleSheet.create({
   metaText: {
     fontSize: 14,
   },
-  resolveButton: {
-    alignItems: "center",
-    borderRadius: 999,
-    borderWidth: 1,
-    flexDirection: "row",
+  progressBlock: {
     gap: 8,
-    justifyContent: "center",
-    minHeight: 44,
-    paddingHorizontal: 16,
   },
-  resolveLabel: {
+  progressHeader: {
+    alignItems: "center",
+    flexDirection: "row",
+    justifyContent: "space-between",
+  },
+  progressLabel: {
+    fontSize: 12,
+    fontWeight: "700",
+    letterSpacing: 0.8,
+    textTransform: "uppercase",
+  },
+  progressValue: {
     fontSize: 14,
     fontWeight: "700",
+  },
+  progressTrack: {
+    borderRadius: 999,
+    height: 8,
+    overflow: "hidden",
+  },
+  progressFill: {
+    borderRadius: 999,
+    height: "100%",
   },
 });
