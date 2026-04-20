@@ -21,25 +21,25 @@ import {
 
 function formatAyahRangeLabel(startAyah: number, endAyah: number) {
   if (startAyah === endAyah) {
-    return `Ayah ${startAyah}`;
+    return `آية ${startAyah}`;
   }
 
-  return `Ayahs ${startAyah}-${endAyah}`;
+  return `الآيات ${startAyah}-${endAyah}`;
 }
 
 function formatRubLastRevised(value: string | null) {
   if (!value) {
-    return "Never";
+    return "لم تتم المراجعة";
   }
 
   const parsed = parseISO(value);
 
   if (isToday(parsed)) {
-    return "Today";
+    return "اليوم";
   }
 
   if (isYesterday(parsed)) {
-    return "Yesterday";
+    return "أمس";
   }
 
   return format(parsed, "MMM d, yyyy");
@@ -63,12 +63,12 @@ export default function SurahRubScreen() {
       <Screen>
         <View style={styles.emptyState}>
           <Text style={[styles.emptyTitle, { color: theme.colors.text }]}>
-            Surah not found
+            السورة غير موجودة
           </Text>
           <Text style={[styles.emptyBody, { color: theme.colors.textMuted }]}>
-            This Surah is no longer in your tracked list.
+            هذه السورة لم تعد موجودة في قائمة المتابعة.
           </Text>
-          <Button label="Back to Dashboard" onPress={() => router.back()} />
+          <Button label="العودة للرئيسية" onPress={() => router.back()} />
         </View>
       </Screen>
     );
@@ -103,14 +103,14 @@ export default function SurahRubScreen() {
 
       <View style={styles.heroCopy}>
         <Text style={[styles.eyebrow, { color: theme.colors.primary }]}>
-          {arabicName ?? "Surah"}
+          {arabicName ?? "سورة"}
         </Text>
         <Text style={[styles.title, { color: theme.colors.text }]}>
-          {surah.name}
+          {arabicName ?? "سورة"}
         </Text>
         <Text style={[styles.body, { color: theme.colors.textMuted }]}>
-          Choose the Rub' you revised in this sitting, or mark the entire Surah
-          if you completed it in one pass.
+          اختر الربع الذي راجعته في هذه الجلسة، أو علّم السورة كاملة إذا أنهيتها
+          دفعة واحدة.
         </Text>
       </View>
 
@@ -121,7 +121,7 @@ export default function SurahRubScreen() {
           <Text
             style={[styles.summaryLabel, { color: theme.colors.textMuted }]}
           >
-            Rub' completion
+            نسبة إنجاز الأرباع
           </Text>
           <Text style={[styles.summaryValue, { color: theme.colors.text }]}>
             {computed.progressPercentage}%
@@ -147,22 +147,23 @@ export default function SurahRubScreen() {
           />
         </View>
         <Text style={[styles.summaryMeta, { color: theme.colors.textMuted }]}>
-          {computed.revisedRubCount} of {computed.totalRubCount} Rub' revised
+          تمت مراجعة {computed.revisedRubCount} من أصل {computed.totalRubCount}
+          أرباع
         </Text>
       </View>
 
       <Button
         iconName="checkmark-circle-outline"
-        label="Mark Entire Surah"
+        label="تعليم السورة كاملة"
         onPress={() => setConfirmEntireSurah(true)}
       />
 
       <View style={styles.sectionHeader}>
         <Text style={[styles.sectionTitle, { color: theme.colors.text }]}>
-          Rub' list
+          قائمة الأرباع
         </Text>
         <Text style={[styles.sectionMeta, { color: theme.colors.textMuted }]}>
-          {rubStates.length} total
+          الإجمالي: {rubStates.length}
         </Text>
       </View>
 
@@ -205,7 +206,7 @@ export default function SurahRubScreen() {
               <View style={styles.rubHeader}>
                 <View style={styles.rubTitleBlock}>
                   <Text style={[styles.rubTitle, { color: theme.colors.text }]}>
-                    Rub' {rub.localRubNumber}
+                    الربع {rub.localRubNumber}
                   </Text>
                   <Text
                     style={[
@@ -280,7 +281,7 @@ export default function SurahRubScreen() {
                   { color: theme.colors.textMuted },
                 ]}
               >
-                Last revised: {formatRubLastRevised(rub.lastRevisedAt)}
+                آخر مراجعة: {formatRubLastRevised(rub.lastRevisedAt)}
               </Text>
             </Pressable>
           );
@@ -307,7 +308,7 @@ export default function SurahRubScreen() {
                 <Text
                   style={[styles.statsModalTitle, { color: theme.colors.text }]}
                 >
-                  Rub' {statsRub.localRubNumber}
+                  الربع {statsRub.localRubNumber}
                 </Text>
                 <Pressable
                   onPress={() => setStatsRubId(null)}
@@ -322,7 +323,7 @@ export default function SurahRubScreen() {
                       { color: theme.colors.textMuted },
                     ]}
                   >
-                    Close
+                    إغلاق
                   </Text>
                 </Pressable>
               </View>
@@ -345,7 +346,7 @@ export default function SurahRubScreen() {
                       { color: theme.colors.textMuted },
                     ]}
                   >
-                    Last revised
+                    آخر مراجعة
                   </Text>
                   <Text
                     style={[styles.statValue, { color: theme.colors.text }]}
@@ -366,7 +367,7 @@ export default function SurahRubScreen() {
                       { color: theme.colors.textMuted },
                     ]}
                   >
-                    Times revised
+                    عدد المراجعات
                   </Text>
                   <Text
                     style={[styles.statValue, { color: theme.colors.text }]}
@@ -387,15 +388,15 @@ export default function SurahRubScreen() {
                       { color: theme.colors.textMuted },
                     ]}
                   >
-                    Longest gap
+                    أطول انقطاع
                   </Text>
                   <Text
                     style={[styles.statValue, { color: theme.colors.text }]}
                   >
                     {getLongestRubRevisionGapDays(statsRub.revisionEvents) ===
                     null
-                      ? "Needs 2+ revisions"
-                      : `${getLongestRubRevisionGapDays(statsRub.revisionEvents)} days`}
+                      ? "يحتاج مراجعتين على الأقل"
+                      : `${getLongestRubRevisionGapDays(statsRub.revisionEvents)} يوم`}
                   </Text>
                 </View>
               </View>
@@ -405,10 +406,10 @@ export default function SurahRubScreen() {
       </Modal>
 
       <ConfirmDialog
-        confirmLabel="Confirm"
+        confirmLabel="تأكيد"
         message={
           selectedRub
-            ? `Mark Rub' ${selectedRub.localRubNumber} as revised for ${surah.name}?`
+            ? `هل تريد تعليم الربع ${selectedRub.localRubNumber} كمُراجع في ${arabicName ?? "هذه السورة"}؟`
             : ""
         }
         onCancel={() => setConfirmRubId(null)}
@@ -419,19 +420,19 @@ export default function SurahRubScreen() {
 
           setConfirmRubId(null);
         }}
-        title="Confirm Rub' Revision"
+        title="تأكيد مراجعة الربع"
         visible={confirmRubId !== null}
       />
 
       <ConfirmDialog
-        confirmLabel="Mark Entire Surah"
-        message={`Mark every Rub' in ${surah.name} as revised for this sitting?`}
+        confirmLabel="تعليم السورة كاملة"
+        message={`هل تريد تعليم جميع أرباع ${arabicName ?? "هذه السورة"} كمراجعة في هذه الجلسة؟`}
         onCancel={() => setConfirmEntireSurah(false)}
         onConfirm={() => {
           markEntireSurahAsRevised(surah.id);
           setConfirmEntireSurah(false);
         }}
-        title="Confirm Full Revision"
+        title="تأكيد المراجعة الكاملة"
         visible={confirmEntireSurah}
       />
     </Screen>

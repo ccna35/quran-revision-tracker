@@ -36,14 +36,14 @@ export function EmptyState({ onPrimaryAction }: EmptyStateProps) {
         </View>
       </View>
       <Text style={[styles.title, { color: theme.colors.text }]}>
-        Start tracking your Quran revision
+        ابدأ متابعة مراجعة القرآن
       </Text>
       <Text style={[styles.body, { color: theme.colors.textMuted }]}>
-        Add Surahs you want to revisit and mark them each time you revise.
+        أضف السور التي تريد مراجعتها، وعلّمها في كل مرة تراجع فيها.
       </Text>
       <Button
         iconName="add-circle-outline"
-        label="Add your first Surah"
+        label="أضف أول سورة"
         onPress={onPrimaryAction}
       />
     </View>

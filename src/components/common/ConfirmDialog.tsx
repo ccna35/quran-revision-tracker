@@ -48,7 +48,7 @@ export function ConfirmDialog({
           <View style={styles.actions}>
             <Button
               fullWidth={false}
-              label="Cancel"
+              label="إلغاء"
               onPress={onCancel}
               variant="secondary"
             />

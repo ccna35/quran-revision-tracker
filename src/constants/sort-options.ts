@@ -1,8 +1,8 @@
 import type { SortOption } from '@/types/surah';
 
 export const sortOptions: Array<{ label: string; value: SortOption }> = [
-    { label: 'Days high-low', value: 'days-desc' },
-    { label: 'Days low-high', value: 'days-asc' },
-    { label: 'Name A-Z', value: 'name-asc' },
-    { label: 'Name Z-A', value: 'name-desc' },
+    { label: 'الأيام: الأعلى فالأقل', value: 'days-desc' },
+    { label: 'الأيام: الأقل فالأعلى', value: 'days-asc' },
+    { label: 'الاسم: أ إلى ي', value: 'name-asc' },
+    { label: 'الاسم: ي إلى أ', value: 'name-desc' },
 ];

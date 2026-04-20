@@ -133,7 +133,7 @@ const styles = StyleSheet.create({
   label: {
     fontSize: 14,
     fontWeight: "700",
-    letterSpacing: 1.1,
-    textTransform: "uppercase",
+    fontFamily: "Cairo_700Bold",
+    letterSpacing: 0.2,
   },
 });

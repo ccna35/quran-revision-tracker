@@ -11,6 +11,19 @@ import { buildBackupPayload } from "@/utils/build-backup-payload";
 
 const themeModes: ThemeMode[] = ["light", "dark", "system"];
 
+const themeModeLabels: Record<ThemeMode, string> = {
+  dark: "داكن",
+  light: "فاتح",
+  system: "حسب النظام",
+};
+
+const backupStatusLabels: Record<string, string> = {
+  error: "خطأ",
+  idle: "خامل",
+  running: "جارٍ التنفيذ",
+  success: "ناجح",
+};
+
 export default function SettingsScreen() {
   const theme = useAppTheme();
   const trackedSurahs = useSurahStore((state) => state.trackedSurahs);
@@ -42,21 +55,23 @@ export default function SettingsScreen() {
       recordBackupSuccess(record);
     } catch (error) {
       recordBackupFailure(
-        error instanceof Error ? error.message : "Backup failed.",
+        error instanceof Error ? error.message : "فشلت عملية النسخ الاحتياطي.",
       );
     }
   };
 
   return (
     <Screen>
-      <Text style={[styles.title, { color: theme.colors.text }]}>Settings</Text>
+      <Text style={[styles.title, { color: theme.colors.text }]}>
+        الإعدادات
+      </Text>
       <Text style={[styles.subtitle, { color: theme.colors.textMuted }]}>
-        Control your theme, backup behavior, and local demo data.
+        تحكم في المظهر والنسخ الاحتياطي والبيانات التجريبية المحلية.
       </Text>
 
       <View style={[styles.card, { backgroundColor: theme.colors.card }]}>
         <Text style={[styles.cardTitle, { color: theme.colors.text }]}>
-          Appearance
+          المظهر
         </Text>
         <View style={styles.modeRow}>
           {themeModes.map((mode) => {
@@ -88,7 +103,7 @@ export default function SettingsScreen() {
                     },
                   ]}
                 >
-                  {mode}
+                  {themeModeLabels[mode]}
                 </Text>
               </Pressable>
             );
@@ -98,15 +113,15 @@ export default function SettingsScreen() {
 
       <View style={[styles.card, { backgroundColor: theme.colors.card }]}>
         <Text style={[styles.cardTitle, { color: theme.colors.text }]}>
-          Backup
+          النسخ الاحتياطي
         </Text>
         <Text style={[styles.body, { color: theme.colors.textMuted }]}>
-          The app prepares a local JSON snapshot once daily so future cloud sync
-          can be added cleanly.
+          ينشئ التطبيق نسخة JSON محلية مرة يوميًا لتسهيل إضافة المزامنة السحابية
+          لاحقًا.
         </Text>
         <View style={styles.toggleRow}>
           <Text style={[styles.toggleLabel, { color: theme.colors.text }]}>
-            Auto backup daily
+            نسخ احتياطي تلقائي يومي
           </Text>
           <Switch
             onValueChange={setAutoBackupEnabled}
@@ -123,14 +138,14 @@ export default function SettingsScreen() {
           />
         </View>
         <Text style={[styles.meta, { color: theme.colors.textMuted }]}>
-          Status: {backup.status}
+          الحالة: {backupStatusLabels[backup.status] ?? backup.status}
         </Text>
         <Text style={[styles.meta, { color: theme.colors.textMuted }]}>
-          Last backup: {backup.lastBackup?.savedAt ?? "Not yet created"}
+          آخر نسخة: {backup.lastBackup?.savedAt ?? "لم يتم الإنشاء بعد"}
         </Text>
         {backup.lastBackup?.path ? (
           <Text style={[styles.meta, { color: theme.colors.textMuted }]}>
-            Saved to: {backup.lastBackup.path}
+            تم الحفظ في: {backup.lastBackup.path}
           </Text>
         ) : null}
         {backup.lastError ? (
@@ -140,7 +155,7 @@ export default function SettingsScreen() {
         ) : null}
         <View style={styles.actions}>
           <Button
-            label="Backup now"
+            label="نسخ احتياطي الآن"
             onPress={runManualBackup}
             variant="primary"
           />
@@ -149,23 +164,23 @@ export default function SettingsScreen() {
 
       <View style={[styles.card, { backgroundColor: theme.colors.card }]}>
         <Text style={[styles.cardTitle, { color: theme.colors.text }]}>
-          Developer helpers
+          أدوات المطور
         </Text>
         <View style={styles.actions}>
           <Button
-            label="Load sample data"
+            label="تحميل بيانات تجريبية"
             onPress={loadSampleData}
             variant="secondary"
           />
           <Button
-            label="Clear all Surahs"
+            label="مسح كل السور"
             onPress={() =>
               Alert.alert(
-                "Clear all tracked Surahs",
-                "This will remove your local tracked list.",
+                "مسح كل السور المتابعة",
+                "سيؤدي ذلك إلى حذف القائمة المحلية بالكامل.",
                 [
-                  { style: "cancel", text: "Cancel" },
-                  { onPress: resetAll, style: "destructive", text: "Clear" },
+                  { style: "cancel", text: "إلغاء" },
+                  { onPress: resetAll, style: "destructive", text: "مسح" },
                 ],
               )
             }

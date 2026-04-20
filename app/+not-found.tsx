@@ -10,17 +10,17 @@ export default function NotFoundScreen() {
 
   return (
     <>
-      <Stack.Screen options={{ title: "Not found" }} />
+      <Stack.Screen options={{ title: "غير موجود" }} />
       <View
         style={[styles.container, { backgroundColor: theme.colors.background }]}
       >
         <Text style={[styles.title, { color: theme.colors.text }]}>
-          This screen doesn't exist.
+          هذه الصفحة غير موجودة.
         </Text>
 
         <Link href="/" style={styles.link}>
           <Text style={[styles.linkText, { color: theme.colors.primary }]}>
-            Go to the dashboard
+            العودة إلى الرئيسية
           </Text>
         </Link>
       </View>

@@ -2,12 +2,14 @@ import {
     differenceInCalendarDays,
     format,
     isToday,
+    isValid,
     isYesterday,
     parseISO,
 } from 'date-fns';
+import { ar } from 'date-fns/locale';
 
 import type { ProgressSummary, SurahComputedState, TrackedSurah } from '@/types/surah';
-import { getLatestSurahRevisionAt, getSurahRubProgress } from '@/utils/surah-rub';
+import { getLatestSurahRevisionAt, getSurahRubProgress, getSurahRubStates } from '@/utils/surah-rub';
 
 export function getRevisionTimingState(lastRevisedAt: string | null, now = new Date()) {
     const daysSinceLastRevision = getDaysSinceLastRevision(lastRevisedAt, now);
@@ -16,24 +18,25 @@ export function getRevisionTimingState(lastRevisedAt: string | null, now = new D
         return {
             daysSinceLastRevision,
             neverRevised: true,
-            statusLabel: 'Never revised',
-            lastRevisedLabel: 'Never revised',
+            statusLabel: 'غير مراجع',
+            lastRevisedLabel: 'غير مراجع',
             statusTone: 'neutral' as const,
         };
     }
 
     const parsedDate = parseISO(lastRevisedAt as string);
+    const formattedDate = format(parsedDate, 'd MMM yyyy', { locale: ar });
     const lastRevisedLabel = isToday(parsedDate)
-        ? 'Last revised: Today'
+        ? 'آخر مراجعة: اليوم'
         : isYesterday(parsedDate)
-            ? 'Last revised: Yesterday'
-            : `Last revised: ${format(parsedDate, 'MMM d, yyyy')}`;
+            ? 'آخر مراجعة: أمس'
+            : `آخر مراجعة: ${formattedDate}`;
 
     if (daysSinceLastRevision <= 1) {
         return {
             daysSinceLastRevision,
             neverRevised: false,
-            statusLabel: `${daysSinceLastRevision} day${daysSinceLastRevision === 1 ? '' : 's'}`,
+            statusLabel: `${daysSinceLastRevision} يوم`,
             lastRevisedLabel,
             statusTone: 'fresh' as const,
         };
@@ -43,7 +46,7 @@ export function getRevisionTimingState(lastRevisedAt: string | null, now = new D
         return {
             daysSinceLastRevision,
             neverRevised: false,
-            statusLabel: `${daysSinceLastRevision} day${daysSinceLastRevision === 1 ? '' : 's'}`,
+            statusLabel: `${daysSinceLastRevision} يوم`,
             lastRevisedLabel,
             statusTone: 'steady' as const,
         };
@@ -53,7 +56,7 @@ export function getRevisionTimingState(lastRevisedAt: string | null, now = new D
         return {
             daysSinceLastRevision,
             neverRevised: false,
-            statusLabel: `${daysSinceLastRevision} days`,
+            statusLabel: `${daysSinceLastRevision} يوم`,
             lastRevisedLabel,
             statusTone: 'watch' as const,
         };
@@ -63,7 +66,7 @@ export function getRevisionTimingState(lastRevisedAt: string | null, now = new D
         return {
             daysSinceLastRevision,
             neverRevised: false,
-            statusLabel: `${daysSinceLastRevision} days`,
+            statusLabel: `${daysSinceLastRevision} يوم`,
             lastRevisedLabel,
             statusTone: 'urgent' as const,
         };
@@ -72,7 +75,7 @@ export function getRevisionTimingState(lastRevisedAt: string | null, now = new D
     return {
         daysSinceLastRevision,
         neverRevised: false,
-        statusLabel: `${daysSinceLastRevision}+ days`,
+        statusLabel: `${daysSinceLastRevision}+ يوم`,
         lastRevisedLabel,
         statusTone: 'critical' as const,
     };
@@ -107,6 +110,17 @@ export function getProgressSummary(trackedSurahs: TrackedSurah[]): ProgressSumma
     const computedStates = trackedSurahs.map((surah) => getSurahComputedState(surah));
     const revisedSurahs = computedStates.filter((surah) => !surah.neverRevised).length;
     const revisedRubCount = computedStates.reduce((sum, surah) => sum + surah.revisedRubCount, 0);
+    const revisedRubTodayCount = trackedSurahs.reduce((sum, surah) => {
+        const revisedTodayInSurah = getSurahRubStates(surah).filter((rub) =>
+            rub.revisionEvents.some((event) => {
+                const parsed = parseISO(event);
+
+                return isValid(parsed) && isToday(parsed);
+            })
+        ).length;
+
+        return sum + revisedTodayInSurah;
+    }, 0);
     const neverRevisedSurahs = totalTrackedSurahs - revisedSurahs;
     const totalRubCount = computedStates.reduce((sum, surah) => sum + surah.totalRubCount, 0);
     const progressPercentage =
@@ -116,6 +130,7 @@ export function getProgressSummary(trackedSurahs: TrackedSurah[]): ProgressSumma
         totalTrackedSurahs,
         revisedSurahs,
         revisedRubCount,
+        revisedRubTodayCount,
         neverRevisedSurahs,
         progressPercentage,
         totalRubCount,

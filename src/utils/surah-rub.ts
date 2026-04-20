@@ -97,6 +97,16 @@ export function getLatestSurahRevisionAt(surah: TrackedSurah) {
     return surah.lastRevisedAt;
 }
 
+export function getOldestSurahRevisionAt(surah: TrackedSurah) {
+    const aggregatedRevisionEvents = getAggregatedRevisionEvents(getNormalizedRubRevisions(surah));
+
+    if (aggregatedRevisionEvents.length > 0) {
+        return aggregatedRevisionEvents[0];
+    }
+
+    return surah.lastRevisedAt;
+}
+
 export function hydrateTrackedSurah(surah: TrackedSurah): TrackedSurah {
     const rubRevisions = getNormalizedRubRevisions(surah);
     const revisionEvents = getAggregatedRevisionEvents(rubRevisions);

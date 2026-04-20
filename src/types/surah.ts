@@ -60,6 +60,7 @@ export interface ProgressSummary {
     totalTrackedSurahs: number;
     revisedSurahs: number;
     revisedRubCount: number;
+    revisedRubTodayCount: number;
     neverRevisedSurahs: number;
     progressPercentage: number;
     totalRubCount: number;

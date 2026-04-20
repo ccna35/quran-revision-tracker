@@ -15,8 +15,7 @@ export default function TabLayout() {
         tabBarLabelStyle: {
           fontSize: 11,
           fontWeight: "700",
-          letterSpacing: 0.8,
-          textTransform: "uppercase",
+          fontFamily: "Cairo_700Bold",
         },
         tabBarStyle: {
           backgroundColor: theme.colors.card,
@@ -30,7 +29,7 @@ export default function TabLayout() {
       <Tabs.Screen
         name="index"
         options={{
-          title: "Dashboard",
+          title: "الرئيسية",
           tabBarIcon: ({ color, focused }) => (
             <Ionicons
               color={color}
@@ -43,7 +42,7 @@ export default function TabLayout() {
       <Tabs.Screen
         name="progress"
         options={{
-          title: "Progress",
+          title: "الإحصاءات",
           tabBarIcon: ({ color, focused }) => (
             <Ionicons
               color={color}
@@ -56,7 +55,7 @@ export default function TabLayout() {
       <Tabs.Screen
         name="settings"
         options={{
-          title: "Settings",
+          title: "الإعدادات",
           tabBarIcon: ({ color, focused }) => (
             <Ionicons
               color={color}

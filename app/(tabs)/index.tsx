@@ -47,14 +47,13 @@ export default function DashboardScreen() {
       <View style={styles.headerRow}>
         <View style={styles.headerCopy}>
           <Text style={[styles.eyebrow, { color: theme.colors.primary }]}>
-            Quran Revision
+            متابعة المراجعة
           </Text>
           <Text style={[styles.heroTitle, { color: theme.colors.text }]}>
-            The Sanctuary
+            رفيق المراجعة
           </Text>
           <Text style={[styles.heroBody, { color: theme.colors.textMuted }]}>
-            Maintain the light of the Quran in your heart through steady,
-            intentional revision.
+            ثبّت حفظك للقرآن بالمراجعة المنتظمة، وامشِ بخطة واضحة لكل ربع.
           </Text>
         </View>
         <Pressable
@@ -85,11 +84,11 @@ export default function DashboardScreen() {
 
       <View style={styles.listHeader}>
         <Text style={[styles.sectionTitle, { color: theme.colors.text }]}>
-          {activeTab === "revised" ? "Revised Surahs" : "Never Revised"}
+          {activeTab === "revised" ? "السور المراجعة" : "السور غير المراجعة"}
         </Text>
         <View style={styles.listHeaderActions}>
           <Text style={[styles.sectionMeta, { color: theme.colors.textMuted }]}>
-            {visibleSurahs.length} shown
+            المعروض: {visibleSurahs.length}
           </Text>
           <Pressable
             onPress={() => router.push("/add-surah")}
@@ -114,10 +113,10 @@ export default function DashboardScreen() {
           ]}
         >
           {[
-            { key: "revised", label: "Revised", count: revisedSurahs.length },
+            { key: "revised", label: "مراجعة", count: revisedSurahs.length },
             {
               key: "never",
-              label: "Never Revised",
+              label: "غير مراجعة",
               count: neverRevisedSurahs.length,
             },
           ].map((tab) => {
@@ -176,19 +175,19 @@ export default function DashboardScreen() {
         >
           <Text style={[styles.noResultsTitle, { color: theme.colors.text }]}>
             {deferredQuery
-              ? "No matching Surahs"
+              ? "لا توجد سور مطابقة"
               : activeTab === "revised"
-                ? "No revised Surahs yet"
-                : "No never-revised Surahs"}
+                ? "لا توجد سور مراجعة بعد"
+                : "لا توجد سور غير مراجعة"}
           </Text>
           <Text
             style={[styles.noResultsBody, { color: theme.colors.textMuted }]}
           >
             {deferredQuery
-              ? "Try a shorter or broader search term."
+              ? "جرّب كلمة بحث أقصر أو أوسع."
               : activeTab === "revised"
-                ? "Open a Surah and mark a Rub' to move it into the revised tab."
-                : "Every tracked Surah already has at least one revised Rub'."}
+                ? "افتح سورة وحدد ربعًا تمت مراجعته لينتقل إلى تبويب المراجعة."
+                : "كل سورة مضافة لديها ربع واحد على الأقل تمت مراجعته."}
           </Text>
         </View>
       ) : (

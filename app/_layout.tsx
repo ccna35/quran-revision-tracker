@@ -1,6 +1,14 @@
+import {
+  Cairo_400Regular,
+  Cairo_600SemiBold,
+  Cairo_700Bold,
+  useFonts,
+} from "@expo-google-fonts/cairo";
 import { Stack } from "expo-router";
+import * as SplashScreen from "expo-splash-screen";
 import { StatusBar } from "expo-status-bar";
 import { useEffect } from "react";
+import { I18nManager, Text, TextInput } from "react-native";
 import "react-native-reanimated";
 
 import { localBackupService } from "@/services/backup/local-backup-service";
@@ -19,7 +27,47 @@ export const unstable_settings = {
   initialRouteName: "(tabs)",
 };
 
+void SplashScreen.preventAutoHideAsync();
+
 export default function RootLayout() {
+  const [fontsLoaded] = useFonts({
+    Cairo_400Regular,
+    Cairo_600SemiBold,
+    Cairo_700Bold,
+  });
+
+  useEffect(() => {
+    if (!fontsLoaded) {
+      return;
+    }
+
+    I18nManager.allowRTL(true);
+    I18nManager.forceRTL(true);
+
+    const TextBase = Text as unknown as {
+      defaultProps?: Record<string, unknown>;
+    };
+    const TextInputBase = TextInput as unknown as {
+      defaultProps?: Record<string, unknown>;
+    };
+
+    TextBase.defaultProps = {
+      ...(TextBase.defaultProps ?? {}),
+      style: [{ fontFamily: "Cairo_400Regular", writingDirection: "rtl" }],
+    };
+    TextInputBase.defaultProps = {
+      ...(TextInputBase.defaultProps ?? {}),
+      style: [{ fontFamily: "Cairo_400Regular", writingDirection: "rtl" }],
+      textAlign: "right",
+    };
+
+    void SplashScreen.hideAsync();
+  }, [fontsLoaded]);
+
+  if (!fontsLoaded) {
+    return null;
+  }
+
   return (
     <AppThemeProvider>
       <AutoBackupBridge />
@@ -36,7 +84,10 @@ function RootLayoutNav() {
       <StatusBar style={theme.isDark ? "light" : "dark"} />
       <Stack
         screenOptions={{
-          contentStyle: { backgroundColor: theme.colors.background },
+          contentStyle: {
+            backgroundColor: theme.colors.background,
+            direction: "rtl",
+          },
         }}
       >
         <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
@@ -55,7 +106,7 @@ function RootLayoutNav() {
             contentStyle: { backgroundColor: theme.colors.background },
           }}
         />
-        <Stack.Screen name="+not-found" options={{ title: "Not found" }} />
+        <Stack.Screen name="+not-found" options={{ title: "غير موجود" }} />
       </Stack>
     </>
   );
@@ -99,7 +150,9 @@ function AutoBackupBridge() {
       } catch (error) {
         if (active) {
           recordBackupFailure(
-            error instanceof Error ? error.message : "Backup failed.",
+            error instanceof Error
+              ? error.message
+              : "فشلت عملية النسخ الاحتياطي.",
           );
         }
       }

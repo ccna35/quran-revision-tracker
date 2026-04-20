@@ -70,7 +70,7 @@ export default function AddSurahScreen() {
     const normalizedName = normalizeSurahName(name);
 
     if (!catalogNameSet.has(normalizedName)) {
-      setInlineError("Select a Surah from the curated list.");
+      setInlineError("اختر سورة من القائمة المقترحة.");
       return;
     }
 
@@ -79,7 +79,7 @@ export default function AddSurahScreen() {
     );
 
     if (duplicate) {
-      setInlineError("That Surah is already being tracked.");
+      setInlineError("هذه السورة مضافة بالفعل.");
       return;
     }
 
@@ -122,7 +122,7 @@ export default function AddSurahScreen() {
               />
             </View>
             <Text style={[styles.title, { color: theme.colors.text, flex: 1 }]}>
-              Add New Surah
+              إضافة سورة جديدة
             </Text>
             <Pressable
               onPress={() => router.back()}
@@ -136,7 +136,7 @@ export default function AddSurahScreen() {
           </View>
           <View style={styles.formGroup}>
             <Text style={[styles.label, { color: theme.colors.textMuted }]}>
-              Surah name
+              اسم السورة
             </Text>
             <TextInput
               autoCapitalize="words"
@@ -148,7 +148,7 @@ export default function AddSurahScreen() {
 
                 setQueryValue(value);
               }}
-              placeholder="Search Surah name"
+              placeholder="ابحث عن اسم السورة"
               placeholderTextColor={theme.colors.textMuted}
               selectionColor={theme.colors.primary}
               style={[
@@ -172,7 +172,7 @@ export default function AddSurahScreen() {
 
           <View style={styles.pickerSection}>
             <Text style={[styles.label, { color: theme.colors.textMuted }]}>
-              Curated Surah picker
+              قائمة السور المتاحة
             </Text>
             <View
               style={[
@@ -188,39 +188,45 @@ export default function AddSurahScreen() {
                 showsVerticalScrollIndicator={false}
               >
                 {curatedMatches.length > 0 ? (
-                  curatedMatches.map((surahName) => (
-                    <Pressable
-                      key={surahName}
-                      onPress={() => {
-                        setInlineError(null);
-                        setQueryValue(surahName);
-                        addByName(surahName);
-                      }}
-                      style={({ pressed }) => [
-                        styles.pickerItem,
-                        {
-                          backgroundColor: pressed
-                            ? theme.colors.cardMuted
-                            : "transparent",
-                          borderBottomColor: theme.colors.border,
-                        },
-                      ]}
-                    >
-                      <Text
-                        style={[
-                          styles.pickerItemText,
-                          { color: theme.colors.text },
+                  curatedMatches.map((surahName) => {
+                    const arabicName = getArabicSurahNameByNormalizedName(
+                      normalizeSurahName(surahName),
+                    );
+
+                    return (
+                      <Pressable
+                        key={surahName}
+                        onPress={() => {
+                          setInlineError(null);
+                          setQueryValue(arabicName ?? "");
+                          addByName(surahName);
+                        }}
+                        style={({ pressed }) => [
+                          styles.pickerItem,
+                          {
+                            backgroundColor: pressed
+                              ? theme.colors.cardMuted
+                              : "transparent",
+                            borderBottomColor: theme.colors.border,
+                          },
                         ]}
                       >
-                        {surahName}
-                      </Text>
-                      <Ionicons
-                        color={theme.colors.primary}
-                        name="add-circle-outline"
-                        size={18}
-                      />
-                    </Pressable>
-                  ))
+                        <Text
+                          style={[
+                            styles.pickerItemText,
+                            { color: theme.colors.text },
+                          ]}
+                        >
+                          {arabicName ?? "سورة"}
+                        </Text>
+                        <Ionicons
+                          color={theme.colors.primary}
+                          name="add-circle-outline"
+                          size={18}
+                        />
+                      </Pressable>
+                    );
+                  })
                 ) : (
                   <Text
                     style={[
@@ -228,7 +234,7 @@ export default function AddSurahScreen() {
                       { color: theme.colors.textMuted },
                     ]}
                   >
-                    No available Surahs match this query.
+                    لا توجد سور متاحة تطابق هذا البحث.
                   </Text>
                 )}
               </ScrollView>
@@ -237,7 +243,7 @@ export default function AddSurahScreen() {
 
           <View style={styles.actions}>
             <Button
-              label="Cancel"
+              label="إغلاق"
               onPress={() => router.back()}
               variant="secondary"
             />

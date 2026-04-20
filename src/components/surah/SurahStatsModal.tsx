@@ -20,13 +20,13 @@ interface SurahStatsModalProps {
 
 function formatDateLabel(value: string | null) {
   if (!value) {
-    return "Never";
+    return "لم تتم المراجعة";
   }
 
   try {
     return format(parseISO(value), "MMM d, yyyy");
   } catch {
-    return "Unknown";
+    return "غير معروف";
   }
 }
 
@@ -36,22 +36,22 @@ function formatDaysLabel(value: number | null, fallback: string) {
   }
 
   if (value === 0) {
-    return "Today";
+    return "اليوم";
   }
 
-  return `${value} day${value === 1 ? "" : "s"}`;
+  return `${value} يوم`;
 }
 
 function formatIntervalLabel(value: number | null) {
   if (value === null) {
-    return "Needs 2+ revisions";
+    return "يحتاج مراجعتين على الأقل";
   }
 
   if (Number.isInteger(value)) {
-    return `${value} days`;
+    return `${value} يوم`;
   }
 
-  return `${value.toFixed(1)} days`;
+  return `${value.toFixed(1)} يوم`;
 }
 
 export function SurahStatsModal({
@@ -74,36 +74,37 @@ export function SurahStatsModal({
 
   const statsRows = [
     {
-      label: "Times revised",
+      label: "عدد المراجعات",
       value: String(revisionCount),
     },
     {
-      label: "Last revised",
+      label: "آخر مراجعة",
       value: formatDateLabel(surah.lastRevisedAt),
     },
     {
-      label: "Days since last revision",
-      value: formatDaysLabel(computed.daysSinceLastRevision, "Never revised"),
+      label: "الأيام منذ آخر مراجعة",
+      value: formatDaysLabel(computed.daysSinceLastRevision, "غير مراجع"),
     },
     {
-      label: "Added on",
+      label: "تاريخ الإضافة",
       value: formatDateLabel(surah.createdAt),
     },
     {
-      label: "Days being tracked",
-      value: formatDaysLabel(daysTracked, "Unknown"),
+      label: "أيام المتابعة",
+      value: formatDaysLabel(daysTracked, "غير معروف"),
     },
     {
-      label: "Current status",
+      label: "الحالة الحالية",
       value: computed.statusLabel,
     },
     {
-      label: "Average interval",
+      label: "متوسط الفترة",
       value: formatIntervalLabel(averageGap),
     },
     {
-      label: "Longest gap",
-      value: longestGap === null ? "Needs 2+ revisions" : `${longestGap} days`,
+      label: "أطول انقطاع",
+      value:
+        longestGap === null ? "يحتاج مراجعتين على الأقل" : `${longestGap} يوم`,
     },
   ];
 
@@ -128,10 +129,10 @@ export function SurahStatsModal({
               <Text
                 style={[styles.headerMeta, { color: theme.colors.textMuted }]}
               >
-                {arabicName ?? "Surah"}
+                {arabicName ?? "سورة"}
               </Text>
               <Text style={[styles.title, { color: theme.colors.text }]}>
-                {surah.name}
+                {arabicName ?? "سورة"}
               </Text>
             </View>
             <Pressable
@@ -147,7 +148,7 @@ export function SurahStatsModal({
                   { color: theme.colors.textMuted },
                 ]}
               >
-                Close
+                إغلاق
               </Text>
             </Pressable>
           </View>

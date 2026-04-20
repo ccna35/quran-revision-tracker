@@ -24,7 +24,7 @@ export function SearchInput({ onChangeText, value }: SearchInputProps) {
       <Ionicons color={theme.colors.textMuted} name="search" size={20} />
       <TextInput
         onChangeText={onChangeText}
-        placeholder="Search Surah (English or Arabic)"
+        placeholder="ابحث عن سورة (عربي أو إنجليزي)"
         placeholderTextColor={theme.colors.textMuted}
         selectionColor={theme.colors.primary}
         style={[styles.input, { color: theme.colors.text }]}
@@ -32,7 +32,7 @@ export function SearchInput({ onChangeText, value }: SearchInputProps) {
       />
       {value ? (
         <Pressable
-          accessibilityLabel="Clear search"
+          accessibilityLabel="مسح البحث"
           accessibilityRole="button"
           onPress={() => onChangeText("")}
           style={({ pressed }) => [{ opacity: pressed ? 0.7 : 1 }]}

@@ -1,10 +1,16 @@
 import { Ionicons } from "@expo/vector-icons";
+import { format, isToday, isYesterday, parseISO } from "date-fns";
+import { ar } from "date-fns/locale";
 import { Pressable, StyleSheet, Text, View } from "react-native";
 
 import { getArabicSurahNameByNormalizedName } from "@/constants/surah-arabic-catalog";
 import { useAppTheme } from "@/theme/provider";
 import type { TrackedSurah } from "@/types/surah";
-import { getSurahComputedState } from "@/utils/surah-status";
+import { getOldestSurahRevisionAt } from "@/utils/surah-rub";
+import {
+  getRevisionTimingState,
+  getSurahComputedState,
+} from "@/utils/surah-status";
 
 interface SurahCardProps {
   onPress: (surah: TrackedSurah) => void;
@@ -15,6 +21,26 @@ export function SurahCard({ onPress, surah }: SurahCardProps) {
   const theme = useAppTheme();
   const computed = getSurahComputedState(surah);
   const arabicName = getArabicSurahNameByNormalizedName(surah.normalizedName);
+  const oldestRevisedAt = getOldestSurahRevisionAt(surah);
+  const oldestRubTiming = getRevisionTimingState(oldestRevisedAt);
+
+  const oldestRevisedLabel = (() => {
+    if (!oldestRevisedAt) {
+      return "أقدم مراجعة: غير مراجع";
+    }
+
+    const parsed = parseISO(oldestRevisedAt);
+
+    if (isToday(parsed)) {
+      return "أقدم مراجعة: اليوم";
+    }
+
+    if (isYesterday(parsed)) {
+      return "أقدم مراجعة: أمس";
+    }
+
+    return `أقدم مراجعة: ${format(parsed, "d MMM yyyy", { locale: ar })}`;
+  })();
 
   const toneColors = {
     critical: {
@@ -41,7 +67,7 @@ export function SurahCard({ onPress, surah }: SurahCardProps) {
       backgroundColor: theme.colors.watchSoft,
       color: theme.colors.watch,
     },
-  }[computed.statusTone];
+  }[oldestRubTiming.statusTone];
 
   return (
     <Pressable
@@ -57,15 +83,8 @@ export function SurahCard({ onPress, surah }: SurahCardProps) {
       <View style={styles.row}>
         <View style={styles.titleBlock}>
           <Text style={[styles.name, { color: theme.colors.text }]}>
-            {surah.name}
+            {arabicName ?? "سورة"}
           </Text>
-          {arabicName ? (
-            <Text
-              style={[styles.arabicName, { color: theme.colors.textMuted }]}
-            >
-              {arabicName}
-            </Text>
-          ) : null}
         </View>
         <View
           style={[
@@ -74,7 +93,7 @@ export function SurahCard({ onPress, surah }: SurahCardProps) {
           ]}
         >
           <Text style={[styles.badgeLabel, { color: toneColors.color }]}>
-            {computed.statusLabel}
+            {oldestRubTiming.statusLabel}
           </Text>
         </View>
       </View>
@@ -85,7 +104,7 @@ export function SurahCard({ onPress, surah }: SurahCardProps) {
           size={16}
         />
         <Text style={[styles.metaText, { color: theme.colors.textMuted }]}>
-          {computed.lastRevisedLabel}
+          {oldestRevisedLabel}
         </Text>
       </View>
 
@@ -94,7 +113,7 @@ export function SurahCard({ onPress, surah }: SurahCardProps) {
           <Text
             style={[styles.progressLabel, { color: theme.colors.textMuted }]}
           >
-            Rub' progress
+            تقدّم الأرباع
           </Text>
           <Text style={[styles.progressValue, { color: theme.colors.text }]}>
             {computed.progressPercentage}%
@@ -143,13 +162,9 @@ const styles = StyleSheet.create({
     paddingRight: 12,
   },
   name: {
-    fontSize: 19,
+    fontSize: 24,
     fontWeight: "700",
-    letterSpacing: -0.5,
-  },
-  arabicName: {
-    fontSize: 15,
-    marginTop: 3,
+    letterSpacing: 0,
   },
   badge: {
     borderRadius: 999,

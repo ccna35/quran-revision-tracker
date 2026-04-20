@@ -14,7 +14,7 @@ export function ProgressSummary({ summary }: ProgressSummaryProps) {
     <View style={styles.root}>
       <View style={[styles.heroCard, { backgroundColor: theme.colors.card }]}>
         <Text style={[styles.eyebrow, { color: theme.colors.primary }]}>
-          Rub' completion
+          نسبة إنجاز الأرباع
         </Text>
         <Text style={[styles.heroValue, { color: theme.colors.text }]}>
           {summary.progressPercentage}%
@@ -44,7 +44,7 @@ export function ProgressSummary({ summary }: ProgressSummaryProps) {
           ]}
         >
           <Text style={[styles.statLabel, { color: theme.colors.textMuted }]}>
-            Tracked
+            السور المتابعة
           </Text>
           <Text style={[styles.statValue, { color: theme.colors.text }]}>
             {summary.totalTrackedSurahs}
@@ -57,7 +57,7 @@ export function ProgressSummary({ summary }: ProgressSummaryProps) {
           ]}
         >
           <Text style={[styles.statLabel, { color: theme.colors.textMuted }]}>
-            Revised
+            الأرباع المراجعة
           </Text>
           <Text style={[styles.statValue, { color: theme.colors.text }]}>
             {summary.revisedRubCount}
@@ -70,10 +70,10 @@ export function ProgressSummary({ summary }: ProgressSummaryProps) {
           ]}
         >
           <Text style={[styles.statLabel, { color: theme.colors.textMuted }]}>
-            Never Revised
+            مراجعات اليوم
           </Text>
           <Text style={[styles.statValue, { color: theme.colors.text }]}>
-            {summary.neverRevisedSurahs}
+            {summary.revisedRubTodayCount}
           </Text>
         </View>
       </View>

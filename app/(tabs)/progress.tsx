@@ -2,6 +2,7 @@ import { StyleSheet, Text, View } from "react-native";
 
 import { Screen } from "@/components/common/Screen";
 import { ProgressSummary } from "@/components/dashboard/ProgressSummary";
+import { getArabicSurahNameByNormalizedName } from "@/constants/surah-arabic-catalog";
 import { useSurahStore } from "@/store/use-surah-store";
 import { useAppTheme } from "@/theme/provider";
 import { sortSurahs } from "@/utils/surah-sort";
@@ -18,25 +19,30 @@ export default function ProgressScreen() {
 
   return (
     <Screen>
-      <Text style={[styles.title, { color: theme.colors.text }]}>Progress</Text>
+      <Text style={[styles.title, { color: theme.colors.text }]}>
+        الإحصاءات
+      </Text>
       <Text style={[styles.subtitle, { color: theme.colors.textMuted }]}>
-        Progress now measures Rub' completion across all tracked Surahs, so you
-        can build momentum even when a full Surah spans multiple sittings.
+        نعرض الآن التقدم بناءً على إنجاز الأرباع في جميع السور المتابعة، حتى
+        تحافظ على الاستمرارية حتى لو كانت السورة تحتاج أكثر من جلسة.
       </Text>
 
       <ProgressSummary summary={summary} />
 
       <View style={[styles.panel, { backgroundColor: theme.colors.card }]}>
         <Text style={[styles.panelTitle, { color: theme.colors.text }]}>
-          Most urgent next
+          الأهم للمراجعة الآن
         </Text>
         {urgentSurahs.length === 0 ? (
           <Text style={[styles.panelBody, { color: theme.colors.textMuted }]}>
-            Add Surahs on the dashboard to start building your revision rhythm.
+            أضف سورًا من الصفحة الرئيسية لبدء رحلة مراجعة منتظمة.
           </Text>
         ) : (
           urgentSurahs.map((surah) => {
             const computed = getSurahComputedState(surah);
+            const arabicName = getArabicSurahNameByNormalizedName(
+              surah.normalizedName,
+            );
 
             return (
               <View
@@ -50,13 +56,13 @@ export default function ProgressScreen() {
                   <Text
                     style={[styles.itemTitle, { color: theme.colors.text }]}
                   >
-                    {surah.name}
+                    {arabicName ?? "سورة"}
                   </Text>
                   <Text
                     style={[styles.itemMeta, { color: theme.colors.textMuted }]}
                   >
                     {computed.lastRevisedLabel} · {computed.progressPercentage}%
-                    complete
+                    إنجاز
                   </Text>
                 </View>
                 <Text
