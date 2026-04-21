@@ -36,47 +36,6 @@ export function ProgressSummary({ summary }: ProgressSummaryProps) {
           />
         </View>
       </View>
-      <View style={styles.statsRow}>
-        <View
-          style={[
-            styles.statCard,
-            { backgroundColor: theme.colors.cardElevated },
-          ]}
-        >
-          <Text style={[styles.statLabel, { color: theme.colors.textMuted }]}>
-            السور المتابعة
-          </Text>
-          <Text style={[styles.statValue, { color: theme.colors.text }]}>
-            {summary.totalTrackedSurahs}
-          </Text>
-        </View>
-        <View
-          style={[
-            styles.statCard,
-            { backgroundColor: theme.colors.cardElevated },
-          ]}
-        >
-          <Text style={[styles.statLabel, { color: theme.colors.textMuted }]}>
-            الأرباع المراجعة
-          </Text>
-          <Text style={[styles.statValue, { color: theme.colors.text }]}>
-            {summary.revisedRubCount}
-          </Text>
-        </View>
-        <View
-          style={[
-            styles.statCard,
-            { backgroundColor: theme.colors.cardElevated },
-          ]}
-        >
-          <Text style={[styles.statLabel, { color: theme.colors.textMuted }]}>
-            مراجعات اليوم
-          </Text>
-          <Text style={[styles.statValue, { color: theme.colors.text }]}>
-            {summary.revisedRubTodayCount}
-          </Text>
-        </View>
-      </View>
     </View>
   );
 }
@@ -110,26 +69,5 @@ const styles = StyleSheet.create({
   progressFill: {
     borderRadius: 999,
     height: "100%",
-  },
-  statsRow: {
-    flexDirection: "row",
-    gap: 12,
-  },
-  statCard: {
-    borderRadius: 16,
-    flex: 1,
-    padding: 18,
-  },
-  statLabel: {
-    fontSize: 12,
-    fontWeight: "700",
-    letterSpacing: 1,
-    marginBottom: 12,
-    textTransform: "uppercase",
-  },
-  statValue: {
-    fontSize: 24,
-    fontWeight: "700",
-    letterSpacing: -1,
   },
 });

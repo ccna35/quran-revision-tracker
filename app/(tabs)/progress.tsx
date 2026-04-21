@@ -2,10 +2,12 @@ import { StyleSheet, Text, View } from "react-native";
 
 import { Screen } from "@/components/common/Screen";
 import { ProgressSummary } from "@/components/dashboard/ProgressSummary";
+import { RevisionBarChart } from "@/components/dashboard/RevisionBarChart";
 import { getArabicSurahNameByNormalizedName } from "@/constants/surah-arabic-catalog";
 import { useSurahStore } from "@/store/use-surah-store";
 import { useAppTheme } from "@/theme/provider";
 import { sortSurahs } from "@/utils/surah-sort";
+import { getRevisionsPerDay } from "@/utils/surah-stats";
 import {
   getProgressSummary,
   getSurahComputedState,
@@ -16,6 +18,7 @@ export default function ProgressScreen() {
   const trackedSurahs = useSurahStore((state) => state.trackedSurahs);
   const summary = getProgressSummary(trackedSurahs);
   const urgentSurahs = sortSurahs(trackedSurahs, "days-desc").slice(0, 3);
+  const dailyRevisions = getRevisionsPerDay(trackedSurahs);
 
   return (
     <Screen>
@@ -28,6 +31,13 @@ export default function ProgressScreen() {
       </Text>
 
       <ProgressSummary summary={summary} />
+
+      <View style={[styles.panel, { backgroundColor: theme.colors.card }]}>
+        <Text style={[styles.panelTitle, { color: theme.colors.text }]}>
+          المراجعات آخر ٧ أيام
+        </Text>
+        <RevisionBarChart data={dailyRevisions} />
+      </View>
 
       <View style={[styles.panel, { backgroundColor: theme.colors.card }]}>
         <Text style={[styles.panelTitle, { color: theme.colors.text }]}>

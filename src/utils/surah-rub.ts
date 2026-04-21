@@ -98,10 +98,13 @@ export function getLatestSurahRevisionAt(surah: TrackedSurah) {
 }
 
 export function getOldestSurahRevisionAt(surah: TrackedSurah) {
-    const aggregatedRevisionEvents = getAggregatedRevisionEvents(getNormalizedRubRevisions(surah));
+    const rubLastRevisedDates = getSurahRubStates(surah)
+        .map((rub) => rub.lastRevisedAt)
+        .filter((date): date is string => date !== null)
+        .sort();
 
-    if (aggregatedRevisionEvents.length > 0) {
-        return aggregatedRevisionEvents[0];
+    if (rubLastRevisedDates.length > 0) {
+        return rubLastRevisedDates[0];
     }
 
     return surah.lastRevisedAt;

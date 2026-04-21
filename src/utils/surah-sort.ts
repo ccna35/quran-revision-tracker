@@ -1,8 +1,9 @@
 import type { SortOption, TrackedSurah } from '@/types/surah';
-import { getSurahComputedState } from '@/utils/surah-status';
+import { getOldestSurahRevisionAt } from '@/utils/surah-rub';
+import { getDaysSinceLastRevision } from '@/utils/surah-status';
 
 function getSortableDays(surah: TrackedSurah, neverRevisedPosition: 'first' | 'last') {
-    const days = getSurahComputedState(surah).daysSinceLastRevision;
+    const days = getDaysSinceLastRevision(getOldestSurahRevisionAt(surah));
 
     if (days === null) {
         return neverRevisedPosition === 'first' ? Number.POSITIVE_INFINITY : Number.NEGATIVE_INFINITY;

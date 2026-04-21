@@ -1,4 +1,4 @@
-import { differenceInCalendarDays, isValid, parseISO } from 'date-fns';
+import { differenceInCalendarDays, format, isValid, parseISO, subDays } from 'date-fns';
 
 import type { TrackedSurah } from '@/types/surah';
 import { getLatestSurahRevisionAt, getSurahRubStates } from '@/utils/surah-rub';
@@ -71,4 +71,30 @@ export function getLongestRevisionGapDays(surah: TrackedSurah) {
 
         return Math.max(maxGap, gap);
     }, 0);
+}
+
+export interface DailyRevisionCount {
+    date: Date;
+    label: string;
+    count: number;
+}
+
+export function getRevisionsPerDay(
+    trackedSurahs: TrackedSurah[],
+    days = 7,
+    now = new Date(),
+): DailyRevisionCount[] {
+    const allEvents = trackedSurahs.flatMap((surah) => getRevisionEvents(surah));
+
+    return Array.from({ length: days }, (_, i) => {
+        const date = subDays(now, days - 1 - i);
+        const dateStr = format(date, 'yyyy-MM-dd');
+        const count = allEvents.filter((iso) => {
+            const parsed = toValidDate(iso);
+
+            return parsed !== null && format(parsed, 'yyyy-MM-dd') === dateStr;
+        }).length;
+
+        return { date, label: format(date, 'EEE'), count };
+    });
 }
